@@ -25,8 +25,14 @@ app.use(bodyParser.urlencoded({ limit: "5mb", extended: true }));
 app.use(cors());
 app.use(compression());
 
-// let KTC_ADDRESS = require("./src/routes/ktc-address");
-// app.use("/ktc-address", KTC_ADDRESS);
+let PORTAL = require("./src/routes/portal");
+app.use("/portal", PORTAL);
+
+let AUTH = require("./src/routes/auth");
+app.use("/auth", AUTH);
+
+let SLOGAN = require("./src/routes/slogan");
+app.use("/slogan", SLOGAN);
 
 app.use(function (req, res, next) {
   res.setHeader("Access-Control-Allow-Origin", "*");

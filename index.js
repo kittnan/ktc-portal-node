@@ -11,7 +11,7 @@ mongoose.set("strictQuery", false);
 
 const dotenv = require("dotenv");
 
-dotenv.config({ path: `.env.${process.env.NODE_ENV}` });
+dotenv.config({ path: `.env` });
 console.log("PORT:", process.env.PORT);
 let mongooseConnect = require("./connect");
 const port = process.env.PORT;
@@ -25,6 +25,14 @@ app.use(bodyParser.urlencoded({ limit: "5mb", extended: true }));
 app.use(cors());
 app.use(compression());
 
+app.get("/health", (req, res) => {
+  res.status(200).json({
+    status: "ok",
+    message: "Service is healthy",
+    timestamp: new Date().toISOString(),
+  });
+});
+
 let PORTAL = require("./src/routes/portal");
 app.use("/portal", PORTAL);
 
@@ -33,6 +41,8 @@ app.use("/auth", AUTH);
 
 let SLOGAN = require("./src/routes/slogan");
 app.use("/slogan", SLOGAN);
+
+
 
 app.use(function (req, res, next) {
   res.setHeader("Access-Control-Allow-Origin", "*");
